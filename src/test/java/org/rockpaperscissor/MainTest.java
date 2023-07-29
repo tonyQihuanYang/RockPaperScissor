@@ -4,63 +4,93 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 class MainTest {
 
-    @Test
-    void test_when_given_rock_and_scissor_returns_winner() {
-        String player1 = "rock";
-        String player2 = "scissor";
+  @Test
+  void game_whenTwoPlayers_withSameHand_tied() {
+    Player p1 = new Player("P1", HAND.ROCK);
+    Player p2 = new Player("P2", HAND.ROCK);
 
-        assertEquals(Main.rockpaperscissorgame(player1, player2), player1);
-    }
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2)), Main.TIED);
+  }
 
-    @Test
-    void test_when_given_rock_and_paper_returns_paper() {
-        String player1 = "rock";
-        String player2 = "paper";
+  @Test
+  void game_whenMoreThanTwoPlayers_withThreeHand_tied() {
+    Player p1 = new Player("P1", HAND.ROCK);
+    Player p2 = new Player("P2", HAND.PAPER);
+    Player p3 = new Player("P3", HAND.SCISSOR);
 
-        assertEquals(Main.rockpaperscissorgame(player1, player2), player2); 
-    }
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2, p3)), Main.TIED);
+  }
 
-    @Test
-    void test_when_given_paper_and_scissor_returns_winner() {
-        String player1 = "paper";
-        String player2 = "scissor";
+  @Test
+  void game_whenTwoPlayers_withRockAndPaper_paperWin() {
+    Player p1 = new Player("P1", HAND.ROCK);
+    Player p2 = new Player("P2", HAND.PAPER);
 
-        assertEquals(Main.rockpaperscissorgame(player1, player2), player2);
-    }
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2)), p2.getName());
+  }
 
-    @Test
-    void test_when_given_scissor_and_paper_returns_winner() {
-        String player1 = "scissor";
-        String player2 = "paper";
+  @Test
+  void game_whenTwoPlayers_withRockAndScissor_RockWin() {
+    Player p1 = new Player("P1", HAND.ROCK);
+    Player p2 = new Player("P2", HAND.SCISSOR);
 
-        assertEquals(Main.rockpaperscissorgame(player1, player2), player1);
-    }
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2)), p1.getName());
+  }
 
-    @Test
-    void test_when_given_scissor_and_scissor_returns_scissor() {
-        String player1 = "scissor";
-        String player2 = "scissor";
+  @Test
+  void game_whenTwoPlayers_withPaperAndScissor_scissorWin() {
+    Player p1 = new Player("P1", HAND.PAPER);
+    Player p2 = new Player("P2", HAND.SCISSOR);
 
-        assertEquals(Main.rockpaperscissorgame(player1, player2), player1);
-    }
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2)), p2.getName());
+  }
 
-    @Test
-    void test_when_given_paper_and_rock_and_rock_returns_rock() {
-        String player1 = "rock";
-        String player2 = "rock";
-        String player3 = "paper";
+  @Test
+  void game_whenMoreThanTwoPlayers_withRockAndPaper_paperWin() {
+    Player p1 = new Player("P1", HAND.ROCK);
+    Player p2 = new Player("P2", HAND.PAPER);
+    Player p3 = new Player("P3", HAND.ROCK);
+    Player p4 = new Player("P4", HAND.PAPER);
+    String expectedWinnerNames = p2.getName() + ", " + p4.getName();
 
-        assertEquals(Main.rockpaperscissorgame(player1, player2, player3), player3);
-    }
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2, p3, p4)), expectedWinnerNames);
+  }
 
-    @Test
-    void test_when_given_invalid_inputs_throws_exception() {
-        String player1 = "blahblahblah";
-        String player2 = "rock";
-        String player3 = "paper";
+  @Test
+  void game_whenMoreThanTwoPlayers_withScissorAndPaper_scissorWin() {
+    Player p1 = new Player("P1", HAND.SCISSOR);
+    Player p2 = new Player("P2", HAND.PAPER);
+    Player p3 = new Player("P3", HAND.SCISSOR);
+    Player p4 = new Player("P4", HAND.PAPER);
+    Player p5 = new Player("P4", HAND.PAPER);
+    String expectedWinnerNames = p1.getName() + ", " + p3.getName();
 
-        assertThrows(InvalidInputException.class, () -> Main.rockpaperscissorgame(player1, player2, player3));
-    }
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2, p3, p4, p5)), expectedWinnerNames);
+  }
+
+  @Test
+  void game_whenMoreThanTwoPlayers_withScissorAndRock_RockWin() {
+    Player p1 = new Player("P1", HAND.SCISSOR);
+    Player p2 = new Player("P2", HAND.ROCK);
+    Player p3 = new Player("P3", HAND.SCISSOR);
+    Player p4 = new Player("P4", HAND.SCISSOR);
+    Player p5 = new Player("P4", HAND.SCISSOR);
+    String expectedWinnerNames = p2.getName();
+
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2, p3, p4, p5)), expectedWinnerNames);
+  }
+
+  @Test
+  void game_whenMoreThanTwoPlayers_withScissorAndPaper_paperWin() {
+    Player p1 = new Player("P1", HAND.SCISSOR);
+    Player p2 = new Player("P2", HAND.PAPER);
+    Player p3 = new Player("P3", HAND.SCISSOR);
+    String expectedWinnerNames = p1.getName() + ", " + p3.getName();
+
+    assertEquals(Main.rockpaperscissorgame(List.of(p1, p2, p3)), expectedWinnerNames);
+  }
 }
